@@ -15,13 +15,7 @@
 const WS_CONFIG = {
     // En production (Render/Railway/VPS) → mettre l'URL du serveur
     // En local → ws://localhost:3000
-    url: (() => {
-        const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const host  = window.location.host;
-        // Si on est sur GitHub Pages (pas de backend), on utilise les APIs directement
-        if (host.includes('github.io') || host.includes('netlify') || host.includes('vercel')) {
-            return null; // Mode sans backend → APIs directes dans app.js
-        }
+    url: 'wss://algeria-megasys-backend.onrender.com',
         return `${proto}//${host}`;
     })(),
     reconnectDelay: 5000,
