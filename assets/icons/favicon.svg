@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <radialGradient id="g1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#D21034"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#006233"/>
+      <stop offset="100%" stop-color="#003318"/>
+    </radialGradient>
+  </defs>
+  <!-- Outer ring -->
+  <circle cx="32" cy="32" r="31" fill="url(#g2)" stroke="#FFD700" stroke-width="2"/>
+  <!-- Inner ring -->
+  <circle cx="32" cy="32" r="22" fill="none" stroke="#D21034" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <!-- Eye shape -->
+  <ellipse cx="32" cy="32" rx="16" ry="9" fill="none" stroke="#FFD700" stroke-width="2"/>
+  <!-- Pupil -->
+  <circle cx="32" cy="32" r="6" fill="url(#g1)"/>
+  <circle cx="32" cy="32" r="2.5" fill="#000"/>
+  <!-- Radar lines -->
+  <line x1="32" y1="1" x2="32" y2="10" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
+  <line x1="32" y1="54" x2="32" y2="63" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
+  <line x1="1" y1="32" x2="10" y2="32" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
+  <line x1="54" y1="32" x2="63" y2="32" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
+  <!-- Diagonal marks -->
+  <line x1="8" y1="8" x2="14" y2="14" stroke="#FFD700" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="56" y1="8" x2="50" y2="14" stroke="#FFD700" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="8" y1="56" x2="14" y2="50" stroke="#FFD700" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="56" y1="56" x2="50" y2="50" stroke="#FFD700" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Stars -->
+  <text x="6" y="30" font-size="7" fill="#D21034" font-family="serif">★</text>
+  <text x="51" y="30" font-size="7" fill="#D21034" font-family="serif">★</text>
+  <text x="29" y="15" font-size="7" fill="#D21034" font-family="serif">★</text>
+  <text x="29" y="58" font-size="7" fill="#D21034" font-family="serif">★</text>
+</svg>

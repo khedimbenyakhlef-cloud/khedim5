@@ -1,0 +1,26 @@
+{
+  "name": "algeria-megasys-backend",
+  "version": "5.0.0",
+  "description": "ALGERIA MEGASYS Backend - Fond\u00e9 par KHEDIM BENYAKHLEF dit BENY-JOE",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [],
+  "author": "KHEDIM BENYAKHLEF dit BENY-JOE",
+  "license": "ISC",
+  "dependencies": {
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "node-fetch": "^2.7.0",
+    "ws": "^8.20.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

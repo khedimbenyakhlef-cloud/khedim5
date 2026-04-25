@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>ALGERIA MEGASYS — Surveillance Nationale en Temps Réel</title>
+    <meta name="description" content="Système National de Surveillance et Défense Algérien - Fondé par KHEDIM BENYAKHLEF dit BENY-JOE">
+    <meta name="author" content="KHEDIM BENYAKHLEF dit BENY-JOE">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/icons/logo192.svg">
+
+    <!-- Libraries -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<!-- SCAN LINE ANIMATION -->
+<div class="dz-scan"></div>
+
+<!-- PARTICLES -->
+<div id="particles-container"></div>
+
+<!-- MAIN CONTAINER -->
+<div class="dz-container">
+
+    <!-- HEADER -->
+    <header class="dz-header">
+        <div class="header-secret-bar">⚡ SYSTÈME NATIONAL DE SURVEILLANCE — ALGÉRIE — FONDÉ PAR KHEDIM BENYAKHLEF DIT BENY-JOE — CLASSÉ SECRET DÉFENSE ⚡</div>
+        <div class="header-main">
+            <div class="header-left">
+                <div class="dz-logo-svg">
+                    <svg viewBox="0 0 80 80" width="70" height="70">
+                        <defs>
+                            <radialGradient id="logoGrad" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#FFD700"/>
+                                <stop offset="100%" stop-color="#D21034"/>
+                            </radialGradient>
+                        </defs>
+                        <circle cx="40" cy="40" r="38" fill="none" stroke="#FFD700" stroke-width="3"/>
+                        <circle cx="40" cy="40" r="30" fill="rgba(0,98,51,0.3)" stroke="#D21034" stroke-width="2"/>
+                        <!-- Eye of vigilance -->
+                        <ellipse cx="40" cy="40" rx="20" ry="12" fill="none" stroke="#FFD700" stroke-width="2"/>
+                        <circle cx="40" cy="40" r="7" fill="url(#logoGrad)"/>
+                        <circle cx="40" cy="40" r="3" fill="#000"/>
+                        <!-- Radar lines -->
+                        <line x1="40" y1="8" x2="40" y2="18" stroke="#FFD700" stroke-width="2"/>
+                        <line x1="40" y1="62" x2="40" y2="72" stroke="#FFD700" stroke-width="2"/>
+                        <line x1="8" y1="40" x2="18" y2="40" stroke="#FFD700" stroke-width="2"/>
+                        <line x1="62" y1="40" x2="72" y2="40" stroke="#FFD700" stroke-width="2"/>
+                        <!-- Stars of Algerian flag -->
+                        <text x="26" y="27" font-size="8" fill="#D21034">★</text>
+                        <text x="50" y="27" font-size="8" fill="#D21034">★</text>
+                    </svg>
+                </div>
+                <div class="header-title-block">
+                    <h1 class="dz-title">ALGERIA MEGASYS</h1>
+                    <div class="dz-subtitle">SYSTÈME NATIONAL DE SURVEILLANCE & DÉFENSE</div>
+                    <div class="dz-founder">Fondé par <span>KHEDIM BENYAKHLEF dit BENY-JOE</span></div>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="dz-flag-animated">
+                    <div class="flag-green"></div>
+                    <div class="flag-white">
+                        <div class="flag-crescent">☪</div>
+                    </div>
+                    <div class="flag-red"></div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-stats">
+                    <div class="hstat">
+                        <span class="hstat-val" id="hdr-time">--:--:--</span>
+                        <span class="hstat-lbl">HEURE ALGER</span>
+                    </div>
+                    <div class="hstat">
+                        <span class="hstat-val" id="hdr-threats">0</span>
+                        <span class="hstat-lbl">MENACES</span>
+                    </div>
+                    <div class="hstat">
+                        <span class="hstat-val" id="hdr-systems">1,247</span>
+                        <span class="hstat-lbl">SYSTÈMES</span>
+                    </div>
+                    <div class="hstat">
+                        <span class="hstat-val threat-badge" id="hdr-level">MAXIMUM</span>
+                        <span class="hstat-lbl">NIVEAU</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- KINSTA AFFILIATE BANNER -->
+    <div class="kinsta-banner">
+        <div class="kinsta-banner-inner">
+            <div class="kinsta-logo">
+                <i class="fas fa-server"></i>
+                <span>KINSTA</span>
+            </div>
+            <div class="kinsta-text">
+                <strong>💡 Recommandé par BENY-JOE :</strong>
+                Hébergez votre projet avec <strong>Kinsta</strong> — Hébergement WordPress de classe mondiale, ultra-rapide et sécurisé.
+                <span class="kinsta-badge">Commission jusqu'à 500$ + 10% récurrent</span>
+            </div>
+            <a href="https://kinsta.com/?kaid=HUFPGOMPMRPI" target="_blank" rel="noopener" class="kinsta-btn">
+                <i class="fas fa-rocket"></i> Commencer avec Kinsta
+            </a>
+        </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="dz-grid" id="main-grid">
+
+        <!-- LEFT PANEL -->
+        <aside class="dz-systems-panel">
+
+            <!-- CONTROL BUTTONS -->
+            <div class="dz-panel">
+                <div class="dz-panel-header">
+                    <i class="fas fa-shield-halved"></i> COMMANDES SYSTÈME
+                    <span class="dz-indicator dz-online"></span>
+                </div>
+                <div class="dz-panel-content">
+                    <button class="dz-button" onclick="activateSurveillance()">
+                        <span class="btn-icon">🛡️</span>
+                        <div><strong>SURVEILLANCE COMPLÈTE</strong><small>Activer tous les systèmes</small></div>
+                    </button>
+                    <button class="dz-button red" onclick="scanFrontieres()">
+                        <span class="btn-icon">🔍</span>
+                        <div><strong>SCAN FRONTIÈRES</strong><small>Analyse périmétrique totale</small></div>
+                    </button>
+                    <button class="dz-button blue" onclick="monitorTraffic()">
+                        <span class="btn-icon">📡</span>
+                        <div><strong>MONITEUR TRAFICS</strong><small>Air / Mer / Terre / Cyber</small></div>
+                    </button>
+                    <button class="dz-button" onclick="showSystemes()">
+                        <span class="btn-icon">⚙️</span>
+                        <div><strong>ÉTAT SYSTÈMES</strong><small>Statut en temps réel</small></div>
+                    </button>
+                    <button class="dz-button purple" onclick="activateAlerteNationale()">
+                        <span class="btn-icon">⚠️</span>
+                        <div><strong>ALERTE NATIONALE</strong><small>Protocole d'urgence</small></div>
+                    </button>
+                    <button class="dz-button green" onclick="showReportsModal()">
+                        <span class="btn-icon">📊</span>
+                        <div><strong>RAPPORTS</strong><small>Générer & télécharger</small></div>
+                    </button>
+                    <button class="dz-button" onclick="executeFullScan()">
+                        <span class="btn-icon">🔐</span>
+                        <div><strong>SCAN COMPLET</strong><small>Analyse nationale totale</small></div>
+                    </button>
+                    <button class="dz-button blue" onclick="showDetailedLogs()">
+                        <span class="btn-icon">📋</span>
+                        <div><strong>LOGS DÉTAILLÉS</strong><small>Journal complet système</small></div>
+                    </button>
+                    <button class="dz-button red" onclick="showAllDetections()">
+                        <span class="btn-icon">🎯</span>
+                        <div><strong>TOUTES DÉTECTIONS</strong><small>Historique complet</small></div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TRAFFIC PANEL -->
+            <div class="dz-panel">
+                <div class="dz-panel-header">
+                    <i class="fas fa-chart-bar"></i> SURVEILLANCE TRAFICS
+                    <span id="traffic-status-badge" class="dz-badge badge-red">ALERTE</span>
+                </div>
+                <div class="dz-panel-content">
+                    <div class="dz-metrics">
+                        <div class="dz-metric">
+                            <div class="dz-label">✈️ AÉRIEN</div>
+                            <div class="dz-value" id="traffic-air">247</div>
+                        </div>
+                        <div class="dz-metric">
+                            <div class="dz-label">🚢 MARITIME</div>
+                            <div class="dz-value" id="traffic-sea">189</div>
+                        </div>
+                        <div class="dz-metric">
+                            <div class="dz-label">🚗 TERRESTRE</div>
+                            <div class="dz-value" id="traffic-land">1,092</div>
+                        </div>
+                        <div class="dz-metric">
+                            <div class="dz-label">💻 CYBER</div>
+                            <div class="dz-value" id="traffic-cyber">3,471</div>
+                        </div>
+                    </div>
+                    <div class="dz-metric" style="margin-top:10px;">
+                        <div class="dz-label">⚠️ ANOMALIES TOTALES</div>
+                        <div class="dz-value" id="traffic-anomalies">12</div>
+                    </div>
+                    <h4 class="section-title">DÉTECTIONS RÉCENTES</h4>
+                    <div id="detections-list" class="detections-list-mini"></div>
+                </div>
+            </div>
+
+            <!-- NATIONAL ALERTS -->
+            <div class="dz-panel">
+                <div class="dz-panel-header">
+                    <i class="fas fa-triangle-exclamation"></i> ALERTES NATIONALES
+                    <span class="dz-indicator dz-critical"></span>
+                </div>
+                <div class="dz-panel-content">
+                    <div class="alert-level-display">
+                        <div class="alert-level-label">NIVEAU D'ALERTE ACTUEL</div>
+                        <div class="dz-progress" style="margin: 10px 0">
+                            <div class="dz-progress-bar" id="alerte-progress" style="width:85%"></div>
+                        </div>
+                        <div class="alert-pct">85% — ÉTAT ROUGE</div>
+                    </div>
+                    <div id="alertes-list" class="alertes-list-mini"></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CENTER PANEL - MAP -->
+        <main class="dz-map-panel">
+
+            <!-- INTERACTIVE MAP -->
+            <div class="dz-panel map-panel-full">
+                <div class="dz-panel-header">
+                    <div class="flex items-center gap-15">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>CARTE DE SURVEILLANCE NATIONALE — TEMPS RÉEL</span>
+                    </div>
+                    <div class="flex items-center gap-20">
+                        <span>ZOOM: <span style="color:var(--dz-gold)" id="map-zoom">x5.8</span></span>
+                        <span>OBJETS: <span style="color:var(--dz-gold)" id="map-objects">2,589</span></span>
+                        <span id="live-badge" class="live-dot-badge"><span class="live-dot"></span>LIVE</span>
+                    </div>
+                </div>
+                <div class="map-wrapper">
+                    <div id="dz-map"></div>
+
+                    <!-- LAYER CONTROLS -->
+                    <div class="map-layers-ctrl">
+                        <div class="layers-title">🗂️ COUCHES</div>
+                        <label><input type="checkbox" checked onchange="toggleLayer('frontieres')"> 🛡️ Frontières</label>
+                        <label><input type="checkbox" checked onchange="toggleLayer('radars')"> 📡 Radars</label>
+                        <label><input type="checkbox" checked onchange="toggleLayer('satellites')"> 🛰️ Satellites</label>
+                        <label><input type="checkbox" checked onchange="toggleLayer('traffic-air')"> ✈️ Aérien</label>
+                        <label><input type="checkbox" checked onchange="toggleLayer('traffic-sea')"> 🚢 Maritime</label>
+                        <label><input type="checkbox" checked onchange="toggleLayer('traffic-land')"> 🚗 Terrestre</label>
+                        <label><input type="checkbox" checked onchange="toggleLayer('menaces')"> ⚠️ Menaces</label>
+                        <label><input type="checkbox" onchange="toggleLayer('wilayas')"> 🏙️ Wilayas</label>
+                        <label><input type="checkbox" onchange="toggleLayer('drones')"> 🚁 Drones</label>
+                        <label><input type="checkbox" onchange="toggleLayer('bases')"> ⚓ Bases mil.</label>
+                        <label><input type="checkbox" onchange="toggleLayer('cyber')"> 💻 Cyber</label>
+                    </div>
+
+                    <!-- LEGEND -->
+                    <div class="map-legend">
+                        <div class="legend-title">LÉGENDE</div>
+                        <div class="legend-grid">
+                            <div><span style="color:#ff0000">●</span> Critique</div>
+                            <div><span style="color:#ff9900">●</span> Élevée</div>
+                            <div><span style="color:#ffff00">●</span> Moyenne</div>
+                            <div><span style="color:#00ff00">●</span> Sécurisé</div>
+                            <div><span style="color:#0066ff">●</span> Aérien</div>
+                            <div><span style="color:#00ffff">●</span> Maritime</div>
+                            <div><span style="color:#ff00ff">●</span> Terrestre</div>
+                            <div><span style="color:#ff8800">●</span> Drone</div>
+                            <div><span style="color:#8800ff">●</span> Base mil.</div>
+                            <div><span style="color:#00ffff">●</span> Cyber</div>
+                        </div>
+                    </div>
+
+                    <!-- DETECTION COUNTER OVERLAY -->
+                    <div class="map-counter-overlay">
+                        <div class="map-counter-item">
+                            <span id="map-critical-count" class="counter-critical">0</span>
+                            <span>CRITIQUES</span>
+                        </div>
+                        <div class="map-counter-item">
+                            <span id="map-total-count" class="counter-total">0</span>
+                            <span>TOTAL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RADAR PANEL -->
+            <div class="dz-panel radar-panel">
+                <div class="dz-panel-header">
+                    <div><i class="fas fa-radar"></i> RADAR NATIONAL INTÉGRÉ</div>
+                    <div class="flex items-center gap-20">
+                        <span>PORTÉE: <span style="color:var(--dz-gold)">3,200KM</span></span>
+                        <span>DÉTECTIONS: <span style="color:var(--dz-gold)" id="radar-detections">0</span></span>
+                    </div>
+                </div>
+                <div class="radar-wrapper">
+                    <canvas id="dz-radar"></canvas>
+                    <div class="radar-info">
+                        <div>ACTIFS: <span id="active-detections" style="color:#0f0">0</span></div>
+                        <div>MENACES: <span id="radar-threats" style="color:#f00">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- RIGHT PANEL - TERMINALS -->
+        <aside class="dz-surveillance-panel">
+
+            <!-- COMMAND TERMINAL -->
+            <div class="dz-terminal">
+                <div class="terminal-header">
+                    <span>⚡ TERMINAL NATIONAL</span>
+                    <span class="dz-indicator dz-online"></span>
+                </div>
+                <div class="terminal-content" id="command-terminal">
+&gt; Initialisation ALGERIA MEGASYS v5.0...
+&gt; Chargement modules de sécurité...
+&gt; Connexion réseaux de défense...
+&gt; Activation détection temps réel...
+&gt;
+&gt; ===== SYSTÈME ALGÉRIEN ONLINE =====
+&gt; Fondé par: KHEDIM BENYAKHLEF dit BENY-JOE
+&gt; Niveau sécurité: MAXIMUM
+&gt; Frontières: 100% SÉCURISÉES
+&gt; Wilayas surveillées: 58/58
+&gt; Systèmes actifs: 1,247
+&gt; Statut: PLEINEMENT OPÉRATIONNEL
+&gt;
+&gt; [root@ALG-SEC]# █
+                </div>
+            </div>
+
+            <!-- BORDER TERMINAL -->
+            <div class="dz-terminal">
+                <div class="terminal-header">
+                    <span>🛡️ TERMINAL FRONTIÈRES</span>
+                    <span class="dz-indicator dz-online"></span>
+                </div>
+                <div class="terminal-content" id="frontieres-terminal">
+&gt; === SURVEILLANCE FRONTIÈRES ===
+&gt; NORD: Méditerranée — 1,200KM ✅
+&gt; EST: Tunisie/Libye — 1,050KM ✅
+&gt; SUD: Mali/Niger — 3,500KM ⚠️
+&gt; OUEST: Maroc/Mauritanie — 2,500KM ✅
+&gt;
+&gt; Radars longue portée: 48 UNITÉS
+&gt; Capteurs sismiques: 120 UNITÉS
+&gt; Caméras thermiques: 85 UNITÉS
+&gt; Drones surveillance: 156 UNITÉS
+&gt; Capteurs cyber: 240 UNITÉS
+&gt;
+&gt; STATUT: SURVEILLANCE MAXIMALE
+                </div>
+            </div>
+
+            <!-- TRAFFIC TERMINAL -->
+            <div class="dz-terminal">
+                <div class="terminal-header">
+                    <span>🚦 TERMINAL TRAFICS</span>
+                    <span class="dz-indicator dz-warning"></span>
+                </div>
+                <div class="terminal-content" id="traffic-terminal">
+&gt; === SURVEILLANCE TRAFICS ===
+&gt; AÉRIEN: Commerciaux:78 / Privés:45
+&gt; AÉRIEN: Militaires:12 / Drones:112
+&gt; MARITIME: Commerciaux:67 / Pêche:89
+&gt; MARITIME: Militaires:8 / Inconnus:3
+&gt; TERRESTRE: Commerciaux:587
+&gt; TERRESTRE: Privés:458 / Mil.:35
+&gt; CYBER: Connexions:3,471 / Sus.:47
+&gt; ANOMALIES: 12 DÉTECTÉES ⚠️
+                </div>
+            </div>
+
+            <!-- ALERTS TERMINAL -->
+            <div class="dz-terminal">
+                <div class="terminal-header">
+                    <span>⚠️ TERMINAL ALERTES</span>
+                    <span class="dz-indicator dz-critical"></span>
+                </div>
+                <div class="terminal-content" id="alert-terminal">
+&gt; === SYSTÈME D'ALERTE NATIONAL ===
+&gt; ALG-001: Trafic non-identifié — EST ⛔
+&gt; ALG-002: Anomalie thermique — TAMANRASSET ⛔
+&gt; ALG-003: Activité suspecte — CÔTE ⚠️
+&gt; ALG-004: Signal radio inconnu — SUD ⚠️
+&gt; ALG-005: Intrusion cyber — ALGER 🔴
+&gt;
+&gt; ROUGE: 2 | ORANGE: 3 | JAUNE: 5
+&gt; ZONES SÉCURISÉES: 42/58
+&gt; === SURVEILLANCE MAXIMALE ===
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="dz-footer">
+        <div class="footer-left">
+            <div class="footer-logo">
+                <svg viewBox="0 0 40 40" width="36" height="36">
+                    <circle cx="20" cy="20" r="18" fill="none" stroke="#FFD700" stroke-width="2"/>
+                    <circle cx="20" cy="20" r="7" fill="#D21034"/>
+                    <circle cx="20" cy="20" r="3" fill="#FFD700"/>
+                    <line x1="20" y1="2" x2="20" y2="10" stroke="#FFD700" stroke-width="2"/>
+                    <line x1="20" y1="30" x2="20" y2="38" stroke="#FFD700" stroke-width="2"/>
+                    <line x1="2" y1="20" x2="10" y2="20" stroke="#FFD700" stroke-width="2"/>
+                    <line x1="30" y1="20" x2="38" y2="20" stroke="#FFD700" stroke-width="2"/>
+                </svg>
+                <div>
+                    <div style="color:var(--dz-gold);font-weight:bold;font-size:1.1em">ALGERIA MEGASYS</div>
+                    <div style="font-size:0.75em;color:#aaa">Fondé par KHEDIM BENYAKHLEF dit BENY-JOE</div>
+                </div>
+            </div>
+            <div class="footer-meta">
+                <span><strong>VERSION:</strong> <span style="color:var(--dz-green)">ALG-SEC v5.0 ULTRA</span></span>
+                <span><strong>MAJ:</strong> <span id="last-update" style="color:white">--</span></span>
+            </div>
+        </div>
+        <div class="footer-indicators">
+            <div class="footer-ind"><div class="dz-indicator dz-online"></div><span>SÉCURITÉ: 100%</span></div>
+            <div class="footer-ind"><div class="dz-indicator dz-online"></div><span>SURVEILLANCE: ACTIVE</span></div>
+            <div class="footer-ind"><div class="dz-indicator dz-critical"></div><span>ALERTE: MAX</span></div>
+            <div class="footer-ind"><div class="dz-indicator dz-online"></div><span>RÉSEAU: 99.9%</span></div>
+        </div>
+        <div class="footer-kinsta">
+            <a href="https://kinsta.com/?kaid=HUFPGOMPMRPI" target="_blank" rel="noopener" class="kinsta-footer-link">
+                <i class="fas fa-server"></i> Hébergé avec <strong>Kinsta</strong> — Recommandé par BENY-JOE
+            </a>
+        </div>
+    </footer>
+</div>
+
+<!-- =============== MODALS =============== -->
+
+<!-- REPORTS MODAL -->
+<div class="dz-overlay" id="reports-overlay" onclick="dismissReportsModal()"></div>
+<div class="dz-modal" id="reports-modal">
+    <div class="modal-header">
+        <div class="modal-title"><i class="fas fa-file-chart-column"></i> GÉNÉRATEUR DE RAPPORTS DÉTAILLÉS</div>
+        <button class="modal-close" onclick="dismissReportsModal()">✕</button>
+    </div>
+    <div class="dz-tabs">
+        <div class="dz-tab active" onclick="switchReportTab('daily')">📅 QUOTIDIEN</div>
+        <div class="dz-tab" onclick="switchReportTab('weekly')">📆 HEBDOMADAIRE</div>
+        <div class="dz-tab" onclick="switchReportTab('monthly')">📊 MENSUEL</div>
+        <div class="dz-tab" onclick="switchReportTab('traffic')">🚦 TRAFIC</div>
+        <div class="dz-tab" onclick="switchReportTab('security')">🛡️ SÉCURITÉ</div>
+        <div class="dz-tab" onclick="switchReportTab('detailed')">📋 DÉTAILLÉ</div>
+    </div>
+
+    <!-- DAILY -->
+    <div class="dz-tab-content active" id="daily-report">
+        <div class="report-card">
+            <div class="report-card-title"><i class="fas fa-calendar-day"></i> RAPPORT QUOTIDIEN — <span id="daily-date">--</span></div>
+            <div class="stats-grid">
+                <div class="stat-item"><div class="stat-label">HEURE</div><div class="stat-value" id="daily-time">--:--</div></div>
+                <div class="stat-item"><div class="stat-label">DÉTECTIONS</div><div class="stat-value" id="daily-detections">0</div></div>
+                <div class="stat-item"><div class="stat-label">ALERTES CRITIQUES</div><div class="stat-value" id="daily-critical">0</div></div>
+                <div class="stat-item"><div class="stat-label">SYSTÈMES ACTIFS</div><div class="stat-value" id="daily-systems">1,247</div></div>
+                <div class="stat-item"><div class="stat-label">MENACES NEUTRALISÉES</div><div class="stat-value" id="daily-neutralized">0</div></div>
+                <div class="stat-item"><div class="stat-label">COUVERTURE</div><div class="stat-value">100%</div></div>
+            </div>
+            <div class="chart-container"><canvas id="daily-chart"></canvas></div>
+            <div class="report-meta">
+                <div>Fondateur: <strong>KHEDIM BENYAKHLEF dit BENY-JOE</strong></div>
+                <div>Plateforme: <strong>ALGERIA MEGASYS v5.0</strong></div>
+            </div>
+            <div class="export-buttons">
+                <button class="export-btn export-pdf" onclick="generateDailyPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+                <button class="export-btn export-excel" onclick="generateDailyExcel()"><i class="fas fa-file-excel"></i> Excel</button>
+                <button class="export-btn export-json" onclick="generateDailyJSON()"><i class="fas fa-code"></i> JSON</button>
+                <button class="export-btn export-csv" onclick="generateDailyCSV()"><i class="fas fa-file-csv"></i> CSV</button>
+                <button class="export-btn export-print" onclick="printDailyReport()"><i class="fas fa-print"></i> Imprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEKLY -->
+    <div class="dz-tab-content" id="weekly-report">
+        <div class="report-card">
+            <div class="report-card-title"><i class="fas fa-calendar-week"></i> RAPPORT HEBDOMADAIRE</div>
+            <div class="chart-container"><canvas id="weekly-chart"></canvas></div>
+            <div class="export-buttons">
+                <button class="export-btn export-pdf" onclick="generateWeeklyPDF()"><i class="fas fa-file-pdf"></i> PDF Hebdomadaire</button>
+                <button class="export-btn export-excel" onclick="generateDetailedExcel()"><i class="fas fa-file-excel"></i> Excel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MONTHLY -->
+    <div class="dz-tab-content" id="monthly-report">
+        <div class="report-card">
+            <div class="report-card-title"><i class="fas fa-calendar-alt"></i> RAPPORT MENSUEL</div>
+            <div class="chart-container"><canvas id="monthly-chart"></canvas></div>
+            <div class="export-buttons">
+                <button class="export-btn export-pdf" onclick="generateDailyPDF()"><i class="fas fa-file-pdf"></i> PDF Mensuel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRAFFIC -->
+    <div class="dz-tab-content" id="traffic-report">
+        <div class="report-card">
+            <div class="report-card-title"><i class="fas fa-traffic-light"></i> RAPPORT TRAFIC COMPLET</div>
+            <div class="stats-grid">
+                <div class="stat-item"><div class="stat-label">AÉRIEN</div><div class="stat-value" id="rpt-air">247</div></div>
+                <div class="stat-item"><div class="stat-label">MARITIME</div><div class="stat-value" id="rpt-sea">189</div></div>
+                <div class="stat-item"><div class="stat-label">TERRESTRE</div><div class="stat-value" id="rpt-land">1,092</div></div>
+                <div class="stat-item"><div class="stat-label">CYBER</div><div class="stat-value" id="rpt-cyber">3,471</div></div>
+            </div>
+            <div class="chart-container"><canvas id="traffic-chart"></canvas></div>
+            <div class="export-buttons">
+                <button class="export-btn export-pdf" onclick="generateDailyPDF()"><i class="fas fa-file-pdf"></i> PDF Trafic</button>
+                <button class="export-btn export-excel" onclick="generateDetailedExcel()"><i class="fas fa-file-excel"></i> Excel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="dz-tab-content" id="security-report">
+        <div class="report-card">
+            <div class="report-card-title"><i class="fas fa-shield-halved"></i> RAPPORT SÉCURITÉ NATIONAL</div>
+            <div id="security-report-content" class="report-content-block">Génération en cours...</div>
+            <div class="export-buttons">
+                <button class="export-btn export-pdf" onclick="generateDailyPDF()"><i class="fas fa-file-pdf"></i> PDF Sécurité</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DETAILED -->
+    <div class="dz-tab-content" id="detailed-report">
+        <div class="report-card">
+            <div class="report-card-title"><i class="fas fa-microscope"></i> RAPPORT ULTRA-DÉTAILLÉ PAR CAS</div>
+            <div id="detailed-cases-list" class="cases-list"></div>
+            <div class="export-buttons">
+                <button class="export-btn export-pdf" onclick="generateUltraDetailedPDF()"><i class="fas fa-file-pdf"></i> PDF Ultra-Détaillé</button>
+                <button class="export-btn export-excel" onclick="generateDetailedExcel()"><i class="fas fa-file-excel"></i> Excel Complet</button>
+                <button class="export-btn export-json" onclick="generateDailyJSON()"><i class="fas fa-code"></i> JSON Complet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SYSTEMS MODAL -->
+<div class="dz-overlay" id="systems-overlay" onclick="dismissSystemesModal()"></div>
+<div class="dz-modal" id="systemes-modal">
+    <div class="modal-header">
+        <div class="modal-title"><i class="fas fa-cogs"></i> ÉTAT DES SYSTÈMES NATIONAUX</div>
+        <button class="modal-close" onclick="dismissSystemesModal()">✕</button>
+    </div>
+    <div class="dz-tabs">
+        <div class="dz-tab active" onclick="switchSystemTab('radars')">📡 RADARS</div>
+        <div class="dz-tab" onclick="switchSystemTab('satellites')">🛰️ SATELLITES</div>
+        <div class="dz-tab" onclick="switchSystemTab('drones')">🚁 DRONES</div>
+        <div class="dz-tab" onclick="switchSystemTab('capteurs')">🔬 CAPTEURS</div>
+        <div class="dz-tab" onclick="switchSystemTab('bases')">⚓ BASES</div>
+    </div>
+    <div id="system-tab-content" class="system-content-area">
+        <div id="radars-tab" class="system-tab active">
+            <table class="dz-table" id="radars-table">
+                <thead><tr><th>ID</th><th>NOM</th><th>WILAYA</th><th>PORTÉE</th><th>STATUT</th><th>DÉTECTIONS</th></tr></thead>
+                <tbody id="radars-tbody"></tbody>
+            </table>
+        </div>
+        <div id="satellites-tab" class="system-tab">
+            <table class="dz-table" id="sats-table">
+                <thead><tr><th>ID</th><th>NOM</th><th>ORBITE</th><th>ALTITUDE</th><th>STATUT</th><th>COUVERTURE</th></tr></thead>
+                <tbody id="sats-tbody"></tbody>
+            </table>
+        </div>
+        <div id="drones-tab" class="system-tab">
+            <table class="dz-table" id="drones-table">
+                <thead><tr><th>ID</th><th>TYPE</th><th>ZONE</th><th>ALTITUDE</th><th>STATUT</th><th>MISSION</th></tr></thead>
+                <tbody id="drones-tbody"></tbody>
+            </table>
+        </div>
+        <div id="capteurs-tab" class="system-tab">
+            <table class="dz-table" id="capteurs-table">
+                <thead><tr><th>ID</th><th>TYPE</th><th>ZONE</th><th>SENSIBILITÉ</th><th>STATUT</th></tr></thead>
+                <tbody id="capteurs-tbody"></tbody>
+            </table>
+        </div>
+        <div id="bases-tab" class="system-tab">
+            <table class="dz-table" id="bases-table">
+                <thead><tr><th>ID</th><th>NOM</th><th>WILAYA</th><th>TYPE</th><th>NIVEAU</th></tr></thead>
+                <tbody id="bases-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="flex gap-20 mt-20">
+        <button class="export-btn export-pdf" onclick="generateSystemReport()"><i class="fas fa-file-pdf"></i> Rapport Systèmes</button>
+        <button class="export-btn export-excel" onclick="exportSystemsData()"><i class="fas fa-file-excel"></i> Export Excel</button>
+        <button class="dz-button" style="flex:1" onclick="refreshSystems()"><i class="fas fa-sync"></i> ACTUALISER</button>
+    </div>
+</div>
+
+<!-- LOGS MODAL -->
+<div class="dz-overlay" id="logs-overlay" onclick="dismissLogsModal()"></div>
+<div class="dz-modal" id="logs-modal">
+    <div class="modal-header">
+        <div class="modal-title"><i class="fas fa-list"></i> JOURNAUX DÉTAILLÉS SYSTÈME</div>
+        <button class="modal-close" onclick="dismissLogsModal()">✕</button>
+    </div>
+    <div class="logs-controls">
+        <select id="log-filter" onchange="filterLogs(this.value)" class="filter-select">
+            <option value="all">Tous les niveaux</option>
+            <option value="info">Info</option>
+            <option value="warning">Avertissement</option>
+            <option value="critical">Critique</option>
+            <option value="command">Commande</option>
+        </select>
+        <button class="export-btn export-pdf" onclick="exportLogs()"><i class="fas fa-download"></i> Exporter</button>
+        <button class="dz-button" onclick="clearLogs()"><i class="fas fa-trash"></i> Effacer</button>
+    </div>
+    <div class="logs-list-container" id="logs-list"></div>
+</div>
+
+<!-- DETECTIONS MODAL -->
+<div class="dz-overlay" id="detections-overlay" onclick="dismissDetectionsModal()"></div>
+<div class="dz-modal" id="detections-modal">
+    <div class="modal-header">
+        <div class="modal-title"><i class="fas fa-crosshairs"></i> TOUTES LES DÉTECTIONS — CAS PAR CAS</div>
+        <button class="modal-close" onclick="dismissDetectionsModal()">✕</button>
+    </div>
+    <div class="logs-controls">
+        <select id="detection-filter" onchange="filterDetections(this.value)" class="filter-select">
+            <option value="all">Tous les types</option>
+            <option value="aerien">Aérien</option>
+            <option value="maritime">Maritime</option>
+            <option value="terrestre">Terrestre</option>
+            <option value="cyber">Cyber</option>
+            <option value="critique">Critique</option>
+        </select>
+        <button class="export-btn export-pdf" onclick="exportDetections()"><i class="fas fa-download"></i> Exporter</button>
+        <button class="dz-button" onclick="clearOldDetections()"><i class="fas fa-trash"></i> Effacer anciens</button>
+    </div>
+    <div class="logs-list-container" id="detections-list-full"></div>
+</div>
+
+<!-- ALERTE NATIONALE MODAL -->
+<div class="dz-overlay" id="alerte-overlay" onclick="dismissAlerteModal()"></div>
+<div class="dz-modal alerte-modal" id="alerte-modal">
+    <div class="modal-header alerte-header">
+        <div class="modal-title">⚠️ PROTOCOLE D'ALERTE NATIONALE</div>
+        <button class="modal-close" onclick="dismissAlerteModal()">✕</button>
+    </div>
+    <div class="alerte-body">
+        <div class="alerte-warning-box">
+            <div class="alerte-icon">⚠️</div>
+            <div class="alerte-warning-text">
+                ATTENTION: Cette action activera le protocole d'alerte nationale complet.<br>
+                Tous les systèmes passeront en mode COMBAT.
+            </div>
+        </div>
+        <div class="alerte-measures">
+            <div style="color:var(--dz-gold);margin-bottom:15px;font-weight:bold;">MESURES D'URGENCE:</div>
+            <label><input type="checkbox" id="m1" checked> Activer tous les systèmes de défense</label>
+            <label><input type="checkbox" id="m2" checked> Renforcer les patrouilles frontalières</label>
+            <label><input type="checkbox" id="m3" checked> Mettre en alerte les forces aériennes</label>
+            <label><input type="checkbox" id="m4" checked> Activer le mode combat des drones</label>
+            <label><input type="checkbox" id="m5"> Restreindre l'espace aérien civil</label>
+            <label><input type="checkbox" id="m6"> Activer le brouillage électronique</label>
+        </div>
+        <div class="flex gap-20 mt-20">
+            <button class="dz-button red" onclick="confirmAlerteNationale()" style="flex:2">⚠️ CONFIRMER L'ALERTE NATIONALE</button>
+            <button class="dz-button" onclick="dismissAlerteModal()" style="flex:1">❌ ANNULER</button>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="assets/js/map.js"></script>
+<script src="assets/js/radar.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/reports.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/websocket.js"></script>
+</body>
+</html>
