@@ -171,7 +171,7 @@ body{
 .dz-panel-content::-webkit-scrollbar-thumb{background:var(--green);border-radius:3px;}
 
 /* ── LEFT PANEL ── */
-.dz-systems-panel{display:flex;flex-direction:column;gap:12px;overflow-y:auto;max-height:calc(100vh - 195px);padding-right:2px;}
+.dz-systems-panel{display:flex;flex-direction:column;gap:12px;overflow-y:auto;max-height:calc(100vh - 160px);padding-right:2px;scroll-behavior:smooth;}
 .dz-systems-panel::-webkit-scrollbar{width:4px;}
 .dz-systems-panel::-webkit-scrollbar-thumb{background:var(--green-dark);border-radius:3px;}
 
@@ -290,7 +290,7 @@ body{
 .radar-info{position:absolute;bottom:12px;left:12px;font-family:var(--mono);font-size:.82em;background:rgba(0,0,0,.75);padding:8px 12px;border-radius:6px;border:1px solid var(--green-light);display:flex;flex-direction:column;gap:4px;color:#ccc;}
 
 /* ── RIGHT PANEL — TERMINAUX LISIBLES ── */
-.dz-surveillance-panel{display:flex;flex-direction:column;gap:13px;overflow-y:auto;max-height:calc(100vh - 195px);}
+.dz-surveillance-panel{display:flex;flex-direction:column;gap:13px;overflow-y:auto;max-height:calc(100vh - 160px);}
 .dz-surveillance-panel::-webkit-scrollbar{width:4px;}
 .dz-surveillance-panel::-webkit-scrollbar-thumb{background:var(--red-dark);border-radius:3px;}
 
